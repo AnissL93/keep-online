@@ -11,7 +11,8 @@ install:
 	install -m 755 keep-online.sh $(PREFIX)/sbin/keep-online.sh
 	sed 's|@PEERS@|$(PEERS)|' keep-online.service > $(UNIT_DIR)/keep-online.service
 	systemctl daemon-reload
-	systemctl enable --now keep-online
+	systemctl enable keep-online
+	systemctl restart keep-online
 
 uninstall:
 	-systemctl disable --now keep-online

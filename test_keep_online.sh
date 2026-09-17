@@ -15,7 +15,7 @@ log() { :; }
 
 run_ticks() { local i; for ((i = 0; i < $1; i++)); do tick; done; }
 
-# 1. uptime high: full escalation, reboot exactly once at REBOOT_AFTER.
+# 1. uptime high: full escalation, reboot fires once because only REBOOT_AFTER ticks are run.
 calls=(); fail=0
 uptime_s() { echo 99999; }
 run_ticks 15
@@ -34,5 +34,14 @@ run_ticks 2
 probe() { return 0; }
 tick
 [[ $fail == 0 && ${#calls[@]} == 0 ]] || { echo "FAIL 3: fail=$fail calls=${calls[*]}"; exit 1; }
+
+# 4. reboot suppressed by low uptime, then re-armed once uptime is high.
+calls=(); fail=0
+probe() { return 1; }
+uptime_s() { echo 10; }
+run_ticks 16
+uptime_s() { echo 99999; }
+tick
+[[ "${calls[*]}" == "restart_nic restart_tailscaled reboot_box" ]] || { echo "FAIL 4: ${calls[*]}"; exit 1; }
 
 echo "OK"

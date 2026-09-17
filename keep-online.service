@@ -8,8 +8,9 @@ Type=simple
 ExecStart=/usr/local/sbin/keep-online.sh
 Restart=always
 RestartSec=10
+ExecStopPost=-/usr/bin/nmcli networking on
 # Override with: sudo systemctl edit keep-online
-Environment=PEERS=@PEERS@
+Environment="PEERS=@PEERS@"
 Environment=INTERVAL=60
 Environment=NIC_AFTER=3
 Environment=TS_AFTER=5

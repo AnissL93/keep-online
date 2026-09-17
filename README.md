@@ -17,7 +17,8 @@ Requires NetworkManager, systemd, tailscaled.
 ## Configure
 
 All knobs are `Environment=` lines in the unit. Change them with
-`sudo systemctl edit keep-online`:
+`sudo systemctl edit keep-online`, then run `sudo systemctl restart keep-online`
+to apply them:
 
 | Var | Default | Meaning |
 |-----|---------|---------|
