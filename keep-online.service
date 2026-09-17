@@ -1,0 +1,20 @@
+[Unit]
+Description=keep-online: restart networking / tailscaled / reboot when Tailscale peers are unreachable
+After=network-online.target tailscaled.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/keep-online.sh
+Restart=always
+RestartSec=10
+# Override with: sudo systemctl edit keep-online
+Environment=PEERS=@PEERS@
+Environment=INTERVAL=60
+Environment=NIC_AFTER=3
+Environment=TS_AFTER=5
+Environment=REBOOT_AFTER=15
+Environment=REBOOT_MIN_UPTIME=3600
+
+[Install]
+WantedBy=multi-user.target
